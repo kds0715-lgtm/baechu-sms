@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>절임배추 단체문자 (샘플)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F9F2; --card:#FFFFFF; --leaf:#DDEBCB; --green:#2E6B3A; --green-dark:#1F4D29;
+  --ink:#1C261E; --muted:#56635A; --line:#C9D6BC; --warn-bg:#FFF2D6; --warn:#7A4B00; --off:#EEF0EA;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141A15; --card:#1D251F; --leaf:#24402B; --green:#5FB070; --green-dark:#3F8A50;
+    --ink:#EEF3EC; --muted:#A9B6AC; --line:#33443A; --warn-bg:#3A2C10; --warn:#F2C978; --off:#232A25;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141A15; --card:#1D251F; --leaf:#24402B; --green:#5FB070; --green-dark:#3F8A50;
+  --ink:#EEF3EC; --muted:#A9B6AC; --line:#33443A; --warn-bg:#3A2C10; --warn:#F2C978; --off:#232A25;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-size:20px;line-height:1.5;-webkit-text-size-adjust:100%}
+main{max-width:560px;margin:0 auto;padding:20px 16px 140px}
+h1{font-size:30px;font-weight:900;margin:8px 0 4px;letter-spacing:-0.5px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:18px}
+.notice{background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:14px 16px;font-size:17px;margin-bottom:24px}
+.notice b{display:block;margin-bottom:2px}
+section{margin-bottom:28px}
+.step{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.num{flex:none;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;
+  display:grid;place-items:center;font-weight:900;font-size:22px}
+.step h2{margin:0;font-size:24px;font-weight:900}
+button{font:inherit;cursor:pointer;border:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.big{width:100%;min-height:68px;border-radius:14px;font-size:22px;font-weight:700}
+.photo{background:var(--card);color:var(--green-dark);border:3px dashed var(--green)}
+:root .photo{color:var(--green)}
+.hint{color:var(--muted);font-size:16px;margin:8px 2px 0}
+.list{background:var(--card);border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;background:transparent;color:var(--ink);
+  text-align:left;border-bottom:1px solid var(--line);min-height:72px}
+.row:last-child{border-bottom:none}
+.box{flex:none;width:36px;height:36px;border-radius:8px;border:3px solid var(--green);display:grid;place-items:center;
+  font-size:24px;font-weight:900;color:#fff}
+.row.on .box{background:var(--green)}
+.row:not(.on){background:var(--off)}
+.row:not(.on) .who{opacity:.55;text-decoration:line-through}
+.who{flex:1;min-width:0}
+.name{font-weight:700;font-size:22px;display:block}
+.tel{color:var(--muted);font-size:19px;letter-spacing:.5px}
+.del{flex:none;background:transparent;color:var(--muted);font-size:16px;padding:8px;border-radius:8px}
+.tools{display:flex;gap:10px;margin-top:10px}
+.tools button{flex:1;min-height:52px;border-radius:12px;background:var(--leaf);color:var(--ink);font-weight:700;font-size:18px}
+.add{display:flex;gap:8px;margin-top:10px}
+.add input{flex:1;min-width:0;font:inherit;font-size:20px;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+.add button{min-width:84px;border-radius:12px;background:var(--green);color:#fff;font-weight:700}
+.tpls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.tpl{min-height:60px;border-radius:12px;background:var(--card);border:2px solid var(--line);color:var(--ink);font-weight:700;font-size:19px}
+.tpl.on{background:var(--green);border-color:var(--green);color:#fff}
+textarea{width:100%;min-height:170px;font:inherit;font-size:20px;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);resize:vertical}
+.sendbar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:2px solid var(--line);
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.sendbar .inner{max-width:560px;margin:0 auto}
+.send{background:var(--green);color:#fff;min-height:76px;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.send.disabled{background:var(--line);color:var(--muted)}
+.fallback{display:none;background:var(--card);border:2px solid var(--green);border-radius:14px;padding:16px;margin-bottom:28px}
+.fallback.show{display:block}
+.fallback h3{margin:0 0 6px;font-size:21px}
+.fallback p{margin:0 0 12px;font-size:17px;color:var(--muted)}
+.fallback .copy{width:100%;min-height:56px;border-radius:12px;background:var(--green);color:#fff;font-weight:700;font-size:19px;margin-top:8px}
+details{margin-top:8px;color:var(--muted);font-size:16px}
+details label{display:flex;align-items:center;gap:8px;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:var(--ink);color:var(--bg);
+  padding:12px 18px;border-radius:12px;font-size:18px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion: reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <h1>절임배추 단체문자</h1>
+  <p class="sub">장부 사진 한 장으로 여러 분께 한 번에 보내기</p>
+
+  <div class="notice">
+    <b>샘플 화면입니다</b>
+    아래 번호 10개는 임의로 만든 번호라 실제 누군가의 번호일 수 있습니다. 시험할 때는 문자 앱이 열리는 것까지만 확인하시고 보내기는 누르지 마세요. 가족 번호를 추가해서 시험하시면 안전합니다.
+  </div>
+
+  <section>
+    <div class="step"><span class="num">1</span><h2>장부 사진 찍기</h2></div>
+    <button class="big photo" id="photoBtn">📷 장부 사진 찍기</button>
+    <p class="hint">샘플에서는 이 버튼을 누르면 예시 번호 10개를 불러옵니다. 실제 버전에서는 찍은 사진에서 이름과 번호를 자동으로 읽어 옵니다.</p>
+  </section>
+
+  <section>
+    <div class="step"><span class="num">2</span><h2>받는 분 확인</h2></div>
+    <div class="list" id="list"></div>
+    <div class="tools">
+      <button id="allOn">모두 선택</button>
+      <button id="allOff">모두 해제</button>
+    </div>
+    <div class="add">
+      <input id="addTel" type="tel" inputmode="numeric" placeholder="번호 직접 추가" autocomplete="off">
+      <button id="addBtn">추가</button>
+    </div>
+    <p class="hint">빼고 싶은 분은 이름을 한 번 누르세요. 다시 누르면 들어갑니다.</p>
+  </section>
+
+  <section>
+    <div class="step"><span class="num">3</span><h2>보낼 내용 고르기</h2></div>
+    <div class="tpls" id="tpls"></div>
+    <textarea id="msg" aria-label="보낼 문자 내용"></textarea>
+    <p class="hint">내용은 직접 고쳐도 됩니다.</p>
+    <details>
+      <summary>번호가 한 명만 들어갈 때</summary>
+      <label><input type="checkbox" id="sepToggle"> 다른 방식으로 번호 넣기</label>
+    </details>
+  </section>
+
+  <div class="fallback" id="fallback">
+    <h3>문자 앱이 안 열렸나요?</h3>
+    <p>아래 버튼으로 번호와 내용을 복사한 뒤, 문자 앱의 받는 사람 칸과 내용 칸에 각각 길게 눌러 붙여넣기 하세요.</p>
+    <button class="copy" id="copyNums">받는 분 번호 복사</button>
+    <button class="copy" id="copyMsg">보낼 내용 복사</button>
+  </div>
+</main>
+
+<div class="sendbar"><div class="inner">
+  <a class="big send" id="sendBtn" href="#">문자 보내기</a>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const SAMPLE = [
+  ["김말순","010-4821-3907"],["이복례","010-7356-1284"],["박춘자","010-2948-6631"],
+  ["최영수","010-5173-8840"],["정순자","010-8602-4419"],["강덕수","010-3391-7256"],
+  ["조옥분","010-6714-0583"],["윤철호","010-9028-3165"],["장금순","010-1487-5922"],
+  ["임만수","010-7745-2018"]
+];
+const TEMPLATES = {
+  "주문 확인":"[절임배추] 주문 감사합니다.\n입금 계좌: 농협 000-0000-0000-00 (예금주 ○○○)\n입금 확인 후 배송해 드리겠습니다.",
+  "입금 확인":"[절임배추] 입금 확인되었습니다. 감사합니다.\n배송 날짜가 정해지면 다시 연락드리겠습니다.",
+  "배송 안내":"[절임배추] 오늘 택배로 보내드렸습니다.\n내일 도착 예정이니 받으시면 바로 서늘한 곳에 두세요.",
+  "직접 쓰기":""
+};
+let people = [];
+let currentTpl = "주문 확인";
+
+const $ = id => document.getElementById(id);
+const fmt = t => {
+  const d = t.replace(/\D/g,"");
+  if (d.length===11) return d.slice(0,3)+"-"+d.slice(3,7)+"-"+d.slice(7);
+  if (d.length===10) return d.slice(0,3)+"-"+d.slice(3,6)+"-"+d.slice(6);
+  return t;
+};
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2200)}
+
+function render(){
+  const list=$("list");
+  list.innerHTML="";
+  if(!people.length){
+    list.innerHTML='<p style="padding:20px 16px;margin:0;color:var(--muted)">위의 사진 찍기 버튼을 누르면 이곳에 받는 분이 나옵니다.</p>';
+  }
+  people.forEach((p,i)=>{
+    const row=document.createElement("div");
+    row.style.display="flex";
+    const b=document.createElement("button");
+    b.className="row"+(p.on?" on":"");
+    b.setAttribute("aria-pressed",p.on);
+    b.innerHTML=`<span class="box">${p.on?"✓":""}</span><span class="who"><span class="name">${p.name}</span><span class="tel">${p.tel}</span></span>`;
+    b.onclick=()=>{p.on=!p.on;render()};
+    const d=document.createElement("button");
+    d.className="del";d.textContent="지우기";d.setAttribute("aria-label",p.name+" 지우기");
+    d.onclick=()=>{people.splice(i,1);render()};
+    const wrap=document.createElement("div");
+    wrap.style.cssText="display:flex;align-items:center;border-bottom:1px solid var(--line)";
+    b.style.borderBottom="none";
+    wrap.append(b,d);
+    if(!p.on) wrap.style.background="var(--off)";
+    list.append(wrap);
+  });
+  const n=people.filter(p=>p.on).length;
+  const s=$("sendBtn");
+  s.textContent=n?`${n}명에게 문자 보내기`:"받는 분을 선택하세요";
+  s.classList.toggle("disabled",!n);
+  updateLink();
+}
+function selNums(){return people.filter(p=>p.on).map(p=>p.tel.replace(/\D/g,""))}
+function updateLink(){
+  const nums=selNums();const msg=$("msg").value.trim();
+  const sep=$("sepToggle").checked?",":";";
+  $("sendBtn").href=(nums.length&&msg)?"sms:"+nums.join(sep)+"?body="+encodeURIComponent(msg):"#";
+}
+function copyText(t,label){
+  const done=()=>toast(label+" 복사했습니다");
+  const old=()=>{const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.append(a);a.select();a.setSelectionRange(0,t.length);let ok=false;try{ok=document.execCommand("copy")}catch(e){}a.remove();ok?done():toast("복사가 안 됩니다. 길게 눌러 복사해 주세요")};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,old)}else old();
+}
+
+function renderTpls(){
+  const box=$("tpls");box.innerHTML="";
+  Object.keys(TEMPLATES).forEach(k=>{
+    const b=document.createElement("button");
+    b.className="tpl"+(k===currentTpl?" on":"");
+    b.textContent=k;
+    b.onclick=()=>{currentTpl=k;$("msg").value=TEMPLATES[k];renderTpls();if(k==="직접 쓰기")$("msg").focus()};
+    box.append(b);
+  });
+}
+
+$("photoBtn").onclick=()=>{
+  people=SAMPLE.map(([name,tel])=>({name,tel,on:true}));
+  render();toast("장부에서 10명을 찾았습니다");
+};
+$("allOn").onclick=()=>{people.forEach(p=>p.on=true);render()};
+$("allOff").onclick=()=>{people.forEach(p=>p.on=false);render()};
+$("addBtn").onclick=()=>{
+  const v=$("addTel").value.replace(/\D/g,"");
+  if(v.length<10){toast("번호를 끝까지 넣어 주세요");return}
+  people.push({name:"직접 추가",tel:fmt(v),on:true});
+  $("addTel").value="";render();toast("추가했습니다");
+};
+$("sendBtn").onclick=(e)=>{
+  updateLink();
+  if(!selNums().length){e.preventDefault();return}
+  if(!$("msg").value.trim()){e.preventDefault();toast("보낼 내용을 먼저 써 주세요");$("msg").focus();return}
+  $("fallback").classList.add("show");
+};
+$("msg").addEventListener("input",updateLink);
+$("sepToggle").addEventListener("change",updateLink);
+document.addEventListener("click",e=>{if(e.target.closest(".tpl"))updateLink()});
+$("copyNums").onclick=()=>copyText(selNums().map(fmt).join(", "),"번호를");
+$("copyMsg").onclick=()=>copyText($("msg").value,"내용을");
+
+$("msg").value=TEMPLATES[currentTpl];
+renderTpls();render();
+</script>
+</body>
+</html>
