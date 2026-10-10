@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
   --bg:#F7F9F2; --card:#FFFFFF; --leaf:#DDEBCB; --green:#2E6B3A; --green-dark:#1F4D29;
@@ -96,6 +97,7 @@ dialog .row2 button{flex:1;min-height:52px;border-radius:12px;font-weight:700}
 .pc textarea{min-height:220px;font-size:18px;margin-top:12px}
 .pc .gen{width:100%;min-height:60px;border-radius:12px;background:var(--green);color:#fff;font-weight:700;font-size:20px;margin-top:10px}
 .pc label{font-size:17px;color:var(--ink)}
+.xl{width:100%;min-height:60px;border-radius:12px;background:var(--leaf);color:var(--ink);font-weight:700;font-size:20px;margin-top:12px;border:2px dashed var(--green)}
 .qrs{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:16px}
 .qrbox{background:#fff;padding:16px;border-radius:12px;text-align:center;color:#1C261E;font-weight:700}
 .qrbox img,.qrbox canvas{display:block;margin:0 auto 8px}
@@ -149,6 +151,9 @@ dialog .row2 button{flex:1;min-height:52px;border-radius:12px;font-weight:700}
 
   <details class="pc" id="pcBox">
     <summary>컴퓨터에서 번호 넘겨주기</summary>
+    <button class="xl" id="xlBtn">📄 엑셀 파일 불러오기</button>
+    <input type="file" id="xlIn" accept=".xlsx,.xls,.csv" hidden>
+    <p class="hint">엑셀 양식(성명·연락처)을 불러오면 아래 칸이 채워지고 QR이 바로 만들어집니다. 직접 입력해도 됩니다.</p>
     <p class="hint">한 줄에 한 사람씩 "이름 번호" 형식으로 입력하거나 붙여넣으세요. 번호만 써도 됩니다. QR이 나오면 어르신 폰 카메라로 비추세요.</p>
     <textarea id="pcIn" placeholder="김말순 010-4821-3907&#10;이복례 01073561284&#10;010-2948-6631"></textarea>
     <label><input type="checkbox" id="pcNames" checked> 이름도 함께 넘기기</label>
@@ -425,6 +430,41 @@ $("pcGen").onclick=()=>{
     w.append(cap);box.append(w);
   });
   $("pcStatus").textContent=`${list.length}명을 읽었습니다.`+(chunks.length>1?` QR이 ${chunks.length}개입니다. 폰으로 하나씩 차례로 비추세요. 받을 때마다 목록에 더해집니다.`:" 어르신 폰 카메라로 QR을 비추세요.");
+};
+function fixNum(v){let d=digits(String(v));if(d.length===10&&/^1[016789]/.test(d))d="0"+d;return d}
+function rowsFromSheet(rows){
+  const short=t=>String(t).replace(/\s/g,"");
+  const isName=t=>short(t).length<=6&&/^(성명|이름|고객명|주문자|성함)/.test(short(t));
+  const isTel=t=>short(t).length<=8&&/(연락처|전화|휴대폰|핸드폰|번호)/.test(short(t));
+  let hr=-1,nc=-1,tc=-1;
+  for(let r=0;r<Math.min(rows.length,30)&&hr<0;r++){
+    const row=rows[r]||[];let n=-1,t=-1;
+    row.forEach((v,i)=>{if(n<0&&isName(v))n=i;if(t<0&&isTel(v))t=i});
+    if(t>=0){hr=r;nc=n;tc=t}
+  }
+  const out=[];
+  if(hr>=0){
+    for(let r=hr+1;r<rows.length;r++){const row=rows[r]||[];const d=fixNum(row[tc]);
+      if(validMobile(d))out.push([nc>=0?String(row[nc]||"").trim():"",d])}
+  }else{
+    rows.forEach(row=>{(row||[]).forEach((v,i)=>{const d=fixNum(v);
+      if(validMobile(d)){const nm=i>0?String(row[i-1]||"").trim():"";out.push([/\d/.test(nm)?"":nm,d])}})});
+  }
+  return out;
+}
+$("xlBtn").onclick=()=>$("xlIn").click();
+$("xlIn").onchange=async e=>{
+  const f=e.target.files[0];e.target.value="";if(!f)return;
+  if(typeof XLSX==="undefined"){$("pcStatus").textContent="엑셀 도구를 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침하세요.";return}
+  try{
+    const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:""});
+    const list=rowsFromSheet(rows);
+    if(!list.length){$("pcStatus").textContent="파일에서 휴대폰 번호를 찾지 못했습니다. 연락처 칸을 확인하세요.";$("qrs").innerHTML="";return}
+    $("pcIn").value=list.map(([n,d])=>(n?n+" ":"")+fmt(d)).join("\n");
+    $("pcGen").click();
+  }catch(err){$("pcStatus").textContent="파일을 읽지 못했습니다. 엑셀(.xlsx) 파일인지 확인하세요."}
 };
 function importFromHash(){
   const m=location.hash.match(/^#d=(.+)$/);if(!m)return;
